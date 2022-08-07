@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename="/Soudamor">
         <Header />
 
         <ThemeProvider theme={theme}>
