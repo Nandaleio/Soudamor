@@ -5,10 +5,13 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 
 export default function SignUp() {
+
+    const navigate = useNavigate();
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -16,7 +19,7 @@ export default function SignUp() {
             email: data.get('email')?.toString(),
             password: data.get('password')?.toString()
         }).then((user) => {
-            window.location.href = '/signIn';
+            navigate('/signIn');
         }, (error) => {
             if(error) alert(error);
         })

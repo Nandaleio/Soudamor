@@ -1,10 +1,12 @@
 import { AccountCircle } from "@mui/icons-material";
 import { Box, AppBar, Toolbar, Typography, Stack, Button, IconButton, Menu, MenuItem, } from "@mui/material";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "./Auth/supabaseClient";
 
 export default function Header() {
+
+    const navigate = useNavigate();
 
     const [session, setSession] = useState(supabase.auth.session())
 
@@ -16,17 +18,15 @@ export default function Header() {
 
     const signOut = () => {
         supabase.auth.signOut().then((error) => {
-            window.location.href = '/';
+            supabase.auth.api.signOut(session?.access_token ?? "").then(error => {
+                console.log('Sign out api:', error);
+            })
+            setSession(null);
+            navigate('/');
         })
     }
 
-
-    const [auth, setAuth] = useState(true);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAuth(event.target.checked);
-    };
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -41,11 +41,12 @@ export default function Header() {
 
                 <Box sx={{ flexGrow: 1 }}>
                     <Stack direction="row" spacing={3} marginLeft="15px">
-                        <Button component={Link} to="todo" color="secondary">Todo</Button>
+                        <Button component={Link} to="/todo" color="secondary">Todo</Button>
+                        <Button component={Link} to="/game" color="secondary">Game</Button>
                     </Stack>
                 </Box>
 
-                {!session ? <Button component={Link} to="login" color="inherit">Login</Button> :
+                {!session ? <Button component={Link} to="/login" color="inherit">Login</Button> :
                     <div>
                         <IconButton
                             size="large"
@@ -72,7 +73,7 @@ export default function Header() {
                             open={Boolean(anchorEl)}
                             onClose={() => setAnchorEl(null)}
                         >
-                            <MenuItem component={Link} state={session} to="Account">My account</MenuItem>
+                            <MenuItem component={Link} state={session} to="/Account">My account</MenuItem>
                             <MenuItem onClick={() => signOut()}>Sign Out</MenuItem>
                         </Menu>
                     </div>}

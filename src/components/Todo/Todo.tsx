@@ -1,11 +1,15 @@
-import { Button, ButtonGroup, Chip, Stack, TextField } from "@mui/material"
+import { Box, Button, ButtonGroup, Checkbox, Chip, Divider, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Stack, styled, TextField, Tooltip, tooltipClasses, TooltipProps } from "@mui/material"
 import { useEffect, useState } from "react"
 import { supabase } from "../Auth/supabaseClient"
+import { AddTodo } from "./AddTodo"
+
 
 type TodoItem = {
   id: number
   title: string
   created_at: Date
+  description: string
+  step: number
   type: "default" | "error" | "primary" | "secondary" | "info" | "success" | "warning" | undefined
 }
 
@@ -13,7 +17,6 @@ export const Todo = () => {
 
   const [todos, setTodos] = useState<TodoItem[] | null>([]);
 
-  const [newTodoTitle, setNewTodoTitle] = useState("");
 
   useEffect(() => {
     getTodos()
@@ -21,27 +24,20 @@ export const Todo = () => {
 
   const getTodos = () => {
     try {
-      supabase.from('todos').select(`*`).then((res) => setTodos(res.data))
+      supabase.from('todos').select(`*`).then((res) => {
+        if (res && res.data) {
+          setTodos(res.data)
+          setToDoList(res.data.filter(t => t.step === 0));
+          setDoingList(res.data.filter(t => t.step === 1));
+          setDoneList(res.data.filter(t => t.step === 2));
+        }
+      })
     } catch (error: any) {
       alert(error.message)
     }
   }
 
-  const addTodo = (type: string) => {
-    try {
-      
-      supabase.from('todos').insert([
-          { title: newTodoTitle, type: type },
-        ]).then((newItem) => {
-          if(!newItem.error && newItem.data) setTodos([...todos ?? [], newItem.data[0]]);
-        });
-
-      setNewTodoTitle("");
-
-    } catch (error: any) {
-      alert(error.message)
-    }
-  }
+  
 
   const removeTodo = (id: number) => {
     try {
@@ -52,25 +48,61 @@ export const Todo = () => {
     }
   }
 
+  const [toDoList, setToDoList] = useState<TodoItem[] | null>([]);
+  const [doingList, setDoingList] = useState<TodoItem[] | null>([]);
+  const [doneList, setDoneList] = useState<TodoItem[] | null>([]);
+
+  const changeStep = (id: number, value: number) => {
+    supabase.from('todos')
+      .update({ step: value })
+      .eq('id', id).then(() => { });
+  }
+
+  const customList = (items: TodoItem[] | null) => (
+    <Paper sx={{ width: 200, height: 230, overflow: 'auto' }}>
+      <List dense component="div" role="list">
+        {items?.map((value: TodoItem) => {
+          return (
+            <ListItem key={value.id} sx={{ backgroundColor: value.type, color: "white" }}>
+
+              {value.step > 0 && <ListItemButton onClick={() => changeStep(value.id, value.step - 1)}>{"<"}</ListItemButton>}
+
+                <ListItemText>{value.title}</ListItemText>
+
+              {value.step < 2 && <ListItemButton onClick={() => changeStep(value.id, value.step + 1)}>{">"}</ListItemButton>}
+            </ListItem>
+          );
+        })}
+        <ListItem />
+      </List>
+
+
+
+    </Paper>
+  )
+
+
+
+
+
   return (
     <>
+      <Box marginTop="20px" display="flex" alignItems="center">
 
-      <TextField label="Add todo" value={newTodoTitle} onChange={(e: any) => setNewTodoTitle(e.target.value)} />
-      <ButtonGroup variant="contained">
-        <Button onClick={() => addTodo("error")} color="error">+</Button>
-        <Button onClick={() => addTodo("warning")} color="warning">+</Button>
-        <Button onClick={() => addTodo("secondary")} color="secondary">+</Button>
-        <Button onClick={() => addTodo("success")} color="success">+</Button>
-        <Button onClick={() => addTodo("primary")} color="primary">+</Button>
-        <Button onClick={() => addTodo("info")} color="info">+</Button>
-      </ButtonGroup>
+        <Stack direction="column" spacing={2}>
 
-      <Stack direction="column" justifyContent="center" alignItems="center" spacing={2} sx={{ marginTop: "20px" }}>
-        {todos && todos.map((row: TodoItem) => (
-          <Chip label={row.title} color={row.type} onDelete={() => removeTodo(row.id)} />
-        )
-        )}
-      </Stack>
+          <AddTodo/>
+          
+
+
+          <Grid container spacing={2} sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap ' }}>
+            <Grid item>{customList(toDoList)}</Grid>
+            <Grid item>{customList(doingList)}</Grid>
+            <Grid item>{customList(doneList)}</Grid>
+          </Grid>
+
+        </Stack>
+      </Box>
     </>
   )
 }

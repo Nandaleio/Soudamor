@@ -6,11 +6,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 
 
 export const SignIn = () => {
+    
+    const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -19,7 +21,7 @@ export const SignIn = () => {
             email: data.get('email')?.toString(),
             password: data.get('password')?.toString()
         }).then((user) => {
-            window.location.href = '/';
+            navigate('/');
         }, (error) => {
             if(error) alert(error);
         })

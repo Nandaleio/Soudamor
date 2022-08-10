@@ -5,6 +5,7 @@ import './App.css';
 import Account from './components/Auth/Account';
 import { SignIn } from './components/Auth/SignIn';
 import SignUp from './components/Auth/SignUp';
+import { Game } from './components/Game/Game';
 import Header from './components/Header';
 import { Todo } from './components/Todo/Todo';
 import { Welcome } from './components/Welcome';
@@ -12,37 +13,29 @@ import { Welcome } from './components/Welcome';
 function App() {
 
 
-  const theme = createTheme();
+  // const theme = createTheme();
 
   return (
     <div className="App">
       <BrowserRouter>
         <Header />
 
-        <ThemeProvider theme={theme}>
-          <Container component="main" maxWidth="xs">
+        {/* <ThemeProvider theme={theme}> */}
+          <Container component="main" sx={{display: "flex", alignItem: "center", justifyContent: "center", width: "100%"}}>
             <CssBaseline />
-            <Box
-              sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
 
               <Routes>
                 <Route path="*" element={<Welcome />} />
-                <Route path="todo" element={<Todo />} />
+                <Route path="/todo" element={<Todo />} />
 
-
-                <Route path="login" element={<SignIn />} />
-                <Route path="signUp" element={<SignUp />} />
-                <Route path="account" element={<Account />} />
+                
+                <Route path="/game" element={<Game />} />
+                <Route path="/login" element={<SignIn />} />
+                <Route path="/signUp" element={<SignUp />} />
+                <Route path="/account" element={<Account />} />
               </Routes>
-            </Box>
           </Container>
-        </ThemeProvider>
+        {/* </ThemeProvider> */}
       </BrowserRouter>
     </div>
   );
