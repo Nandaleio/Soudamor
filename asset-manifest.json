@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/Soudamor/static/css/main.073c9b0a.css",
-    "main.js": "/Soudamor/static/js/main.3d98ea82.js",
+    "main.js": "/Soudamor/static/js/main.c4ebb990.js",
     "static/js/255.fcb137bf.chunk.js": "/Soudamor/static/js/255.fcb137bf.chunk.js",
     "static/js/787.f0f3256c.chunk.js": "/Soudamor/static/js/787.f0f3256c.chunk.js",
     "index.html": "/Soudamor/index.html",
     "main.073c9b0a.css.map": "/Soudamor/static/css/main.073c9b0a.css.map",
-    "main.3d98ea82.js.map": "/Soudamor/static/js/main.3d98ea82.js.map",
+    "main.c4ebb990.js.map": "/Soudamor/static/js/main.c4ebb990.js.map",
     "255.fcb137bf.chunk.js.map": "/Soudamor/static/js/255.fcb137bf.chunk.js.map",
     "787.f0f3256c.chunk.js.map": "/Soudamor/static/js/787.f0f3256c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.3d98ea82.js"
+    "static/js/main.c4ebb990.js"
   ]
 }
