@@ -14,6 +14,9 @@ export default function Header() {
         supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session)
         })
+
+
+
     }, [])
 
     const signOut = () => {
@@ -23,6 +26,7 @@ export default function Header() {
             })
             setSession(null);
             navigate('/');
+
         })
     }
 
@@ -33,17 +37,17 @@ export default function Header() {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" style={{ background: "linear-gradient(90deg, rgba(238,174,202,1) 42%, rgba(148,187,233,1) 100%)" }}>
             <Toolbar>
                 <Typography variant="h3" component="div">
-                    ناندليو
+                    صدمور
                 </Typography>
 
                 <Box sx={{ flexGrow: 1 }}>
-                    <Stack direction="row" spacing={3} marginLeft="15px">
+                    {session && <Stack direction="row" spacing={3} marginLeft="15px">
                         <Button component={Link} to="/todo" color="secondary">Todo</Button>
                         <Button component={Link} to="/game" color="secondary">Game</Button>
-                    </Stack>
+                    </Stack>}
                 </Box>
 
                 {!session ? <Button component={Link} to="/login" color="inherit">Login</Button> :
