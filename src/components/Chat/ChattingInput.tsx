@@ -19,14 +19,12 @@ export const ChattingInput = ({selectedUser}: {selectedUser: string}) => {
 
     const send = () => {
         setMessage(message.trim());
-        console.log(user?.id, selectedUser, message)
         if(message && user){
             supabase
             .from('chat')
             .insert([
                 { sender: user?.id, receiver: selectedUser, text: message },
             ]).then(res => {
-                console.log(res);
                 setMessage("");
             })
         }
