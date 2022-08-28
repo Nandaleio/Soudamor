@@ -5,6 +5,7 @@ import { supabase } from "../Auth/supabaseClient";
 import { ChattingInput } from "./ChattingInput";
 import { ChattingMessages } from "./ChattingMessages";
 import { ConnectedUserList } from "./ConnectedUserList";
+import SendIcon from '@mui/icons-material/Send';
 
 
 export const Chat = () => {
@@ -51,7 +52,7 @@ export const Chat = () => {
             <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <>
                     <Fab sx={{ position: 'absolute', bottom: 16, right: 16, }} onClick={() => setOpen(!open)}>
-                        Chat
+                        <SendIcon />
                     </Fab>
 
                     <Paper hidden={!open} sx={{ position: 'absolute', bottom: 80, right: 16, maxWidth: "400px", maxHeight: "400px" }}>

@@ -39,54 +39,50 @@ export default function Header() {
 
     return (
         <>
-        <AppBar position="static" style={{ background: "linear-gradient(90deg, rgba(238,174,202,1) 42%, rgba(148,187,233,1) 100%)" }}>
-            <Toolbar>
-                <Typography variant="h3" component="div">
-                    صدمور
-                </Typography>
+            <AppBar position="static" style={{ background: "linear-gradient(90deg, rgba(238,174,202,1) 60%, rgba(148,187,233,1) 100%)" }}>
+                <Toolbar>
+                    <Typography variant="h3" sx={{cursor : "pointer", color: "#a231b1"}} onClick={()=>navigate('/')}>
+                        صدمور
+                    </Typography>
 
-                <Box sx={{ flexGrow: 1 }}>
-                    {session && <Stack direction="row" spacing={3} marginLeft="15px">
-                        <Button component={Link} to="/todo" color="secondary">Todo</Button>
-                        <Button component={Link} to="/game" color="secondary">Game</Button>
-                    </Stack>}
-                </Box>
+                    <Box sx={{ml:"40px", flexGrow: 1 }}>
+                        {session && <Stack direction="row" spacing={3} marginLeft="15px">
+                            <Button component={Link} to="/todo" color="secondary" sx={{color: '#a231b1' }}>Todo</Button>
+                            {/* <Button component={Link} to="/game" color="secondary">Game</Button> */}
+                        </Stack>}
+                    </Box>
 
-                {!session ? <Button component={Link} to="/login" color="inherit">Login</Button> :
-                    <div>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorEl}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorEl)}
-                            onClose={() => setAnchorEl(null)}
-                        >
-                            <MenuItem component={Link} state={session} to="/Account">My account</MenuItem>
-                            <MenuItem onClick={() => signOut()}>Sign Out</MenuItem>
-                        </Menu>
-                    </div>}
-            </Toolbar>
-        </AppBar>
-        
-        {session && <Chat/>}
-      </>
+                    {!session ? <Button component={Link} to="/login" color="inherit">Login</Button> :
+                        <div>
+                            <IconButton
+                                size="large"
+                                onClick={handleMenu}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                            <Menu
+                                anchorEl={anchorEl}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorEl)}
+                                onClose={() => setAnchorEl(null)}
+                            >
+                                <MenuItem component={Link} state={session} to="/Account" >My account</MenuItem>
+                                <MenuItem onClick={() => signOut()}>Sign Out</MenuItem>
+                            </Menu>
+                        </div>}
+                </Toolbar>
+            </AppBar>
+
+            {session && <Chat />}
+        </>
     );
 }

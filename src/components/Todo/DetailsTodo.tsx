@@ -16,7 +16,7 @@ export const DetailsTodo = ({ id, open, handleClose }: { id: number, open: boole
       .select('*')
       .eq('id', id)
       .then((item) => {
-        console.log(item)
+        console.log("item",item)
         if (item.data) setTodoItem(item.data[0])
       })
 

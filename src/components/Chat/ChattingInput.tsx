@@ -18,7 +18,6 @@ export const ChattingInput = ({selectedRoom}: {selectedRoom: string}) => {
 
 
     const send = () => {
-        console.log(user?.id , selectedRoom, message);
         setMessage(message.trim());
         if(message && user){
             supabase
