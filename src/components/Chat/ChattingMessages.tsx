@@ -5,12 +5,13 @@ import { useUserHook } from "../../hooks/UserHook";
 import { supabase } from "../Auth/supabaseClient";
 
 type Message = {
-    text: string,
-    sender: string
-    receiver: string
+    id: number
+    text: string
+    room_id: number
+    user_id: string
 }
 
-export const ChattingMessages = ({ selectedUser }: { selectedUser: string }) => {
+export const ChattingMessages = ({ selectedRoom }: { selectedRoom: string }) => {
 
     const [user] = useUserHook();
 
@@ -18,58 +19,39 @@ export const ChattingMessages = ({ selectedUser }: { selectedUser: string }) => 
     const [currentSubscription, setCurrentSubscription] = useState<RealtimeSubscription[]>([]);
 
     useEffect(() => {
-        setCurrentSubscription(supabase.getSubscriptions().filter(s => s.topic.startsWith("realtime:public:chat")));
+        setCurrentSubscription(supabase.getSubscriptions().filter(s => s.topic.startsWith("realtime:public:chat_messages")));
         console.log("currentSubscription",currentSubscription);
-        if (selectedUser && user) {
+        if (selectedRoom && user) {
             if(currentSubscription && currentSubscription.length > 0) {
                 currentSubscription.forEach(s => {
                     supabase.removeSubscription(s);
                 })
             } 
             
-            supabase.from(`chat:sender=eq.${user?.id}`)
+            supabase.from(`chat_messages:room_id=eq.${selectedRoom}`)
             .on("INSERT", payload => {
                 console.log("msg received", payload);
                 setListMessage(m => [...m, payload.new]);
-            })
-            .subscribe()
-            supabase.from(`chat:sender=eq${selectedUser}`)
-            .on("INSERT", payload => {
-                console.log("msg received", payload);
-                setListMessage(m => [...m, payload.new]);
-            })
-            .subscribe()
-            supabase.from(`chat:receiver=eq.${selectedUser}`)
-            .on("INSERT", payload => {
-                console.log("msg received", payload);
-                setListMessage(m => [...m, payload.new]);
-            })
-            .subscribe()
-            supabase.from(`chat:receiver=eq.${user?.id}`)
-            .on("INSERT", payload => {
-                console.log("msg received", payload);
-                setListMessage(m => [...m, payload.new]);
-            })
-            .subscribe()
+            }).subscribe()
 
 
             supabase
-                .from('chat')
+                .from('chat_messages')
                 .select('*')
-                .in('sender', [user?.id, selectedUser])
-                .in('receiver', [user?.id, selectedUser])
+                .eq("room_id", selectedRoom)
                 .then(res => {
+                    console.log("getting list message from "+ selectedRoom, res);
                     setListMessage(res.data ?? [])
                 })
         }
-    }, [selectedUser, user])
+    }, [selectedRoom, user])
 
     return (
         <Stack direction="column" justifyContent="flex-start" spacing={0.25} alignItems="baseline">
 
             {listMessage.map((msg) => {
                 return (
-                    msg.sender !== user?.id ? <Chip size="small" label={msg.text} sx={{ background: "#eeaeca", ml: "5px !important", overflow: "clip" }} />
+                    msg.user_id !== user?.id ? <Chip size="small" label={msg.text} sx={{ background: "#eeaeca", ml: "5px !important", overflow: "clip" }} />
                         : <Chip size="small" label={msg.text} sx={{ background: "#94bbe9", alignSelf: "flex-end", mr: "5px !important" }} />
                 )
             })}

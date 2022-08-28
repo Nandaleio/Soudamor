@@ -6,7 +6,7 @@ import { supabase } from '../Auth/supabaseClient';
 
 
 
-export const ChattingInput = ({selectedUser}: {selectedUser: string}) => {
+export const ChattingInput = ({selectedRoom}: {selectedRoom: string}) => {
     
     const [user] = useUserHook();
 
@@ -18,13 +18,15 @@ export const ChattingInput = ({selectedUser}: {selectedUser: string}) => {
 
 
     const send = () => {
+        console.log(user?.id , selectedRoom, message);
         setMessage(message.trim());
         if(message && user){
             supabase
-            .from('chat')
+            .from('chat_messages')
             .insert([
-                { sender: user?.id, receiver: selectedUser, text: message },
+                { user_id: user?.id, room_id: selectedRoom, text: message },
             ]).then(res => {
+                console.log("message sent:", res);
                 setMessage("");
             })
         }

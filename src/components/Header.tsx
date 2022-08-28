@@ -3,6 +3,7 @@ import { Box, AppBar, Toolbar, Typography, Stack, Button, IconButton, Menu, Menu
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "./Auth/supabaseClient";
+import { Chat } from "./Chat/Chat";
 
 export default function Header() {
 
@@ -37,6 +38,7 @@ export default function Header() {
     };
 
     return (
+        <>
         <AppBar position="static" style={{ background: "linear-gradient(90deg, rgba(238,174,202,1) 42%, rgba(148,187,233,1) 100%)" }}>
             <Toolbar>
                 <Typography variant="h3" component="div">
@@ -83,5 +85,8 @@ export default function Header() {
                     </div>}
             </Toolbar>
         </AppBar>
+        
+        {session && <Chat/>}
+      </>
     );
 }

@@ -35,7 +35,6 @@ function App() {
 
       </Routes>
 
-      <Chat/>
     </BrowserRouter>
   );
 }

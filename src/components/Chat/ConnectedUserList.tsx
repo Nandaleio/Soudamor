@@ -17,6 +17,7 @@ export const ConnectedUserList = ({ callB, selectedUser }: { callB: any, selecte
             .select('*')
             .neq("id", user?.id)
             .then(res => {
+                console.log("List user: ", res.data);
                 setOnlineUser(res.data ?? []);
             })
     }, [])

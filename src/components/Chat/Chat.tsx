@@ -1,5 +1,6 @@
 import { Avatar, ClickAwayListener, Divider, Fab, List, ListItem, ListItemAvatar, Paper, Stack } from "@mui/material"
 import { useEffect, useState } from "react";
+import { useUserHook } from "../../hooks/UserHook";
 import { supabase } from "../Auth/supabaseClient";
 import { ChattingInput } from "./ChattingInput";
 import { ChattingMessages } from "./ChattingMessages";
@@ -9,11 +10,41 @@ import { ConnectedUserList } from "./ConnectedUserList";
 export const Chat = () => {
     const [open, setOpen] = useState(false);
 
-    const [selectedUser, setSelectedUser] = useState("");
- 
+    const [selectedRoom, setSelectedRoom] = useState("");
+    const [user] = useUserHook();
+
     const setUser = (id: string) => {
-        setSelectedUser(id);
-      }
+        supabase
+            .from('chat_room_users')
+            .select("*")
+            .in('user_id', [id, user?.id])
+            .then((resGetChatRoom) => {
+                if (resGetChatRoom.data?.length) {
+                    console.log("Getting room id :", resGetChatRoom);
+                    setSelectedRoom(resGetChatRoom.data[0].room_id);
+                } else {
+                    console.log("Creating a new Room");
+                    supabase
+                        .from('chat_room')
+                        .insert([
+                            { name: 'TestName' },
+                        ]).then(resCreateChatRoom => {
+                            console.log("New Room : ", resCreateChatRoom);
+                            if (resCreateChatRoom.data && resCreateChatRoom.data[0]) {
+                                supabase
+                                    .from('chat_room_users')
+                                    .insert([
+                                        { user_id: user?.id, room_id: resCreateChatRoom.data[0].id },
+                                        { user_id: id, room_id: resCreateChatRoom.data[0].id },
+                                    ]).then(res => {
+                                        console.log("User added to the new Room", res);
+                                        setSelectedRoom(resCreateChatRoom.data[0].id);
+                                    })
+                            }
+                        })
+                }
+            });
+    }
 
     return (
         <>
@@ -25,11 +56,11 @@ export const Chat = () => {
 
                     <Paper hidden={!open} sx={{ position: 'absolute', bottom: 80, right: 16, maxWidth: "400px", maxHeight: "400px" }}>
 
-                    <ConnectedUserList selectedUser={selectedUser} callB={setUser}/>
+                        <ConnectedUserList selectedUser={selectedRoom} callB={setUser} />
 
-                    <ChattingMessages selectedUser={selectedUser}/>
+                        <ChattingMessages selectedRoom={selectedRoom} />
 
-                    <ChattingInput  selectedUser={selectedUser}/>
+                        <ChattingInput selectedRoom={selectedRoom} />
 
                     </Paper>
                 </>
