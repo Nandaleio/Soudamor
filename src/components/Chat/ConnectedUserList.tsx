@@ -4,45 +4,59 @@ import { supabase } from "../Auth/supabaseClient"
 import { User } from "../models/User";
 import { useUserHook } from "../../hooks/UserHook";
 import { UserAvatar } from "./UserAvatar";
+import { FriendModal } from "./FriendModal";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 
 export const ConnectedUserList = ({ callB, selectedUser }: { callB: any, selectedUser: string }) => {
 
-    const [user] = useUserHook();
+    const [currentUser] = useUserHook();
 
     const [onlineUser, setOnlineUser] = useState<User[]>([]);
 
+    const [friendModal, setFriendModal] = useState(false);
+
     useEffect(() => {
 
-        supabase.from('users')
-            .select('*')
-            .neq("id", user?.id)
+        supabase.from('friends')
+            .select(`friend_id`)
+            .eq('user_id', currentUser?.id)
             .then(res => {
-                console.log("List user: ", res.data);
-                setOnlineUser(res.data ?? []);
+                console.log('list friends id', res.data)
+                if (res.data) {
+                    supabase.from('users')
+                        .select('*')
+                        .in("id", res.data.map(l => l.friend_id))
+                        .then(res => {
+                            console.log("List user: ", res.data);
+                            setOnlineUser(res.data ?? []);
+                        })
+                }
             })
+
+
     }, [])
 
     return (
         <>
             <Box display="flex">
 
-                <IconButton>
-                    +
+                <IconButton onClick={() => setFriendModal(true)}>
+                    <SettingsIcon />
                 </IconButton>
-                <Stack direction="row-reverse" spacing={0} sx={{flexGrow: "2"}}>
+                <Stack direction="row-reverse" spacing={0} sx={{ flexGrow: "2" }}>
 
                     {onlineUser.map((user, i) => {
                         return (
                             <IconButton key={i} onClick={() => callB(user.id)}>
-                                <UserAvatar user={user} selectedUser={selectedUser}/>
+                                <UserAvatar user={user} selectedUser={selectedUser} />
                             </IconButton>
                         )
                     }
                     )}
 
                 </Stack>
-
+                <FriendModal open={friendModal} onClose={() => setFriendModal(false)} />
             </Box>
         </>
 
