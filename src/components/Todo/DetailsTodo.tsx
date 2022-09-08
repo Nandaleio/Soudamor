@@ -74,8 +74,8 @@ export const DetailsTodo = ({ id, open, handleClose }: { id: number, open: boole
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={() => removeTodo()}>Save</Button>
-          <Button onClick={() => saveTodo()}>Delete</Button>
+          <Button onClick={() => saveTodo()}>Save</Button>
+          <Button onClick={() => removeTodo()}>Delete</Button>
         </DialogActions>
       </Dialog>
     </>

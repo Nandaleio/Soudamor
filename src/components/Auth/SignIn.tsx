@@ -11,7 +11,7 @@ import { supabase } from './supabaseClient';
 
 
 export const SignIn = () => {
-    
+
     const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -21,9 +21,16 @@ export const SignIn = () => {
             email: data.get('email')?.toString(),
             password: data.get('password')?.toString()
         }).then((user) => {
+            supabase
+                .from('users')
+                .update({ online: true })
+                .eq('id', supabase.auth.session()?.user?.id)
+                .then(res => {
+                    console.log(`you're online !`, res);
+                });
             navigate('/');
         }, (error) => {
-            if(error) alert(error);
+            if (error) alert(error);
         })
     };
 

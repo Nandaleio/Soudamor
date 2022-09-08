@@ -22,6 +22,13 @@ export default function Header() {
 
     const signOut = () => {
         supabase.auth.signOut().then((error) => {
+            supabase.from('users')
+                .update({ online: false })
+                .eq('id', session?.user?.id)
+                .then(res => {
+                    console.log(`you're offline !`, res);
+                });
+
             supabase.auth.api.signOut(session?.access_token ?? "").then(error => {
                 console.log('Sign out api:', error);
             })
@@ -41,13 +48,13 @@ export default function Header() {
         <>
             <AppBar position="static" style={{ background: "linear-gradient(90deg, rgba(238,174,202,1) 60%, rgba(148,187,233,1) 100%)" }}>
                 <Toolbar>
-                    <Typography variant="h3" sx={{cursor : "pointer", color: "#a231b1"}} onClick={()=>navigate('/')}>
+                    <Typography variant="h3" sx={{ cursor: "pointer", color: "#a231b1" }} onClick={() => navigate('/')}>
                         صدمور
                     </Typography>
 
-                    <Box sx={{ml:"40px", flexGrow: 1 }}>
+                    <Box sx={{ ml: "40px", flexGrow: 1 }}>
                         {session && <Stack direction="row" spacing={3} marginLeft="15px">
-                            <Button component={Link} to="/todo" color="secondary" sx={{color: '#a231b1' }}>Todo</Button>
+                            <Button component={Link} to="/todo" color="secondary" sx={{ color: '#a231b1' }}>Todo</Button>
                             {/* <Button component={Link} to="/game" color="secondary">Game</Button> */}
                         </Stack>}
                     </Box>

@@ -16,23 +16,16 @@ export const ChattingMessages = ({ selectedRoom }: { selectedRoom: string }) => 
     const [user] = useUserHook();
 
     const [listMessage, setListMessage] = useState<Message[]>([]);
-    const [currentSubscription, setCurrentSubscription] = useState<RealtimeSubscription[]>([]);
 
     useEffect(() => {
-        setCurrentSubscription(supabase.getSubscriptions().filter(s => s.topic.startsWith("realtime:public:chat_messages")));
-        console.log("currentSubscription",currentSubscription);
-        if (selectedRoom && user) {
-            if(currentSubscription && currentSubscription.length > 0) {
-                currentSubscription.forEach(s => {
-                    supabase.removeSubscription(s);
-                })
-            } 
-            
+
+        if (selectedRoom) {
+
             supabase.from(`chat_messages:room_id=eq.${selectedRoom}`)
-            .on("INSERT", payload => {
-                console.log("msg received", payload);
-                setListMessage(m => [...m, payload.new]);
-            }).subscribe()
+                .on("INSERT", payload => {
+                    console.log("msg received", payload);
+                    setListMessage(m => [...m, payload.new]);
+                }).subscribe()
 
 
             supabase
@@ -40,19 +33,19 @@ export const ChattingMessages = ({ selectedRoom }: { selectedRoom: string }) => 
                 .select('*')
                 .eq("room_id", selectedRoom)
                 .then(res => {
-                    console.log("getting list message from "+ selectedRoom, res);
+                    console.log("getting list message from " + selectedRoom, res);
                     setListMessage(res.data ?? [])
                 })
         }
-    }, [selectedRoom, user])
+    }, [selectedRoom])
 
     return (
         <Stack direction="column" justifyContent="flex-start" spacing={0.25} alignItems="baseline">
 
-            {listMessage.map((msg) => {
+            {listMessage.map((msg, i) => {
                 return (
-                    msg.user_id !== user?.id ? <Chip size="small" label={msg.text} sx={{ background: "#eeaeca", ml: "5px !important", overflow: "clip" }} />
-                        : <Chip size="small" label={msg.text} sx={{ background: "#94bbe9", alignSelf: "flex-end", mr: "5px !important" }} />
+                    msg.user_id !== user?.id ? <Chip size="small" label={msg.text} sx={{ background: "#eeaeca", ml: "5px !important", overflow: "clip" }} key={i}/>
+                        : <Chip size="small" label={msg.text} sx={{ background: "#94bbe9", alignSelf: "flex-end", mr: "5px !important" }} key={i}/>
                 )
             })}
 

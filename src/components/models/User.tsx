@@ -6,4 +6,6 @@ export type User = {
     email?: string
     username?: string
     avatar?: string
+    color?: string
+    online?: boolean 
 }

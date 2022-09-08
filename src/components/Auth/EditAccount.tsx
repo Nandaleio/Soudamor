@@ -1,20 +1,16 @@
+
 import { Card, CardContent, Typography, CardActions, Button } from '@mui/material'
 import { useFrame } from '@react-three/fiber'
 import { useState, useEffect } from 'react'
 import { useUserHook } from '../../hooks/UserHook'
 import { UserAvatar } from '../Chat/UserAvatar'
+import { User } from '../models/User'
 import { supabase } from './supabaseClient'
 
-type PublicUser = {
-    id: string
-    email: string
-    username: string
-    avatar: string
-}
-const Account = () => {
+const EditAccount = () => {
 
     const [user] = useUserHook();
-    const [publicUser, setPublicUser] = useState<PublicUser>();
+    const [publicUser, setPublicUser] = useState<User>();
 
     useEffect(() => {
         supabase.from("users")
@@ -33,11 +29,13 @@ const Account = () => {
         <Card sx={{ minWidth: 275 }}>
             <CardContent>
 
-                <UserAvatar user={publicUser ?? { id: '' }} selectedUser={user ? user.id : ''} />
-                
+                <UserAvatar user={publicUser ?? {id: ''}} selectedUser={user ? user.id : ''}/>
+
                 <Typography variant="h4" color="text.secondary" gutterBottom>
                     {publicUser?.username}
                 </Typography>
+
+
 
                 <Typography>
                     Email: {publicUser?.email}
@@ -45,15 +43,13 @@ const Account = () => {
                     Roles : {user?.role}
                     <br />
                     Last Sign at: {user?.last_sign_in_at}
+                    
                 </Typography>
-
             </CardContent>
-            
             <CardActions>
-                <Button>Edit</Button>
             </CardActions>
         </Card>
     )
 }
 
-export default Account
+export default EditAccount

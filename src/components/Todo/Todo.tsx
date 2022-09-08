@@ -12,44 +12,33 @@ import { ListTodo } from "./ListTodo"
 export const Todo = () => {
 
   const [todos, setTodos] = useState<TodoItem[] | null>([]);
-  
-  const [todoSubscription, setTodoSubscription] = useState<RealtimeSubscription>();
 
 
-  useEffect(() => {
-
+  const loadTodos = () => {
     supabase.from('todos').select(`*`).then((res) => {
       console.log("getting all Todo items", res)
       if (res && res.data) {
         setTodos(res.data)
       }
     })
+  }
 
-    let sub = supabase
+
+  useEffect(() => {
+    loadTodos();
+   
+
+    supabase
       .from('todos')
       .on('*', (payload) => {
-        console.log('Change received!', payload);
+        console.log('Change received!', payload)
 
-        let index = todos?.findIndex(t => t.id === payload.new.id);
-        if (index) {
-          let newArr = [...todos ?? []];
-          newArr[index] = payload.new;
-          setTodos(newArr);
-        }
+        loadTodos();
       })
       .subscribe();
 
-      setTodoSubscription(sub);
-
-    return () => {
-      if(todoSubscription) {
-        console.log("remove subsription: ", todoSubscription);
-        supabase.removeSubscription(todoSubscription);
-      }
-  }
 
   }, [])
-
 
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(-1);
@@ -73,7 +62,7 @@ export const Todo = () => {
             <Grid item><ListTodo items={todos?.filter(t => t.step === 2)} setSelectedId={openModal} /></Grid>
           </Grid>
 
-          {/* <DetailsTodo id={selectedId} open={open} handleClose={() => { setOpen(false) }} /> */}
+          <DetailsTodo id={selectedId} open={open} handleClose={() => { setOpen(false) }} />
         </Stack>
       </Box>
     </>
