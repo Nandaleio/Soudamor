@@ -37,7 +37,7 @@ const EditAccount = () => {
                 
                 {/* <ColorPicker name='color' defaultValue='#000' value={publicUser?.color} onChange={color => setColor(color)} */}
  
-/>br
+
 
 
                 <Typography>
