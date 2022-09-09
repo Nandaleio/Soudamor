@@ -7,13 +7,13 @@ export const Welcome = () => {
         <>
             <List>
                 <ListItem>
-                    <ListItemText primary="queifibommupo-6782@yopmail.com" secondary="Avok"/>
+                    <ListItemText secondary="queifibommupo-6782@yopmail.com" primary="Avok"/>
                 </ListItem>
                 <ListItem>
-                    <ListItemText primary="pojanoceique-9988@yopmail.com" secondary="Enderp"/>
+                    <ListItemText secondary="pojanoceique-9988@yopmail.com" primary="Enderp"/>
                 </ListItem>
                 <ListItem>
-                    <ListItemText primary="alt.ek-bokhx37b@yopmail.com" secondary="Nandaleio"/>
+                    <ListItemText secondary="alt.ek-bokhx37b@yopmail.com" primary="Nandaleio"/>
                 </ListItem>
             </List>
         </>

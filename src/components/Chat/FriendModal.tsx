@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, List, ListItem, ListItemAvatar, Avatar, ListItemText, TextField, Typography, ListItemButton, Button } from "@mui/material"
+import { Button, Dialog, DialogTitle, List, ListItem, ListItemText, TextField } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useUserHook } from "../../hooks/UserHook"
 import { supabase } from "../Auth/supabaseClient"

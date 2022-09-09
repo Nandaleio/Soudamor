@@ -1,6 +1,6 @@
-import { Card, CardContent, Typography, CardActions, Button } from '@mui/material'
-import { useFrame } from '@react-three/fiber'
-import { useState, useEffect } from 'react'
+import { Button, Card, CardActions, CardContent, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useUserHook } from '../../hooks/UserHook'
 import { UserAvatar } from '../Chat/UserAvatar'
 import { supabase } from './supabaseClient'
@@ -50,7 +50,7 @@ const Account = () => {
             </CardContent>
             
             <CardActions>
-                <Button>Edit</Button>
+                <Button component={Link} to='/editaccount'>Edit</Button>
             </CardActions>
         </Card>
     )

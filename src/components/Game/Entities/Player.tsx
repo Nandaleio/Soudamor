@@ -1,6 +1,6 @@
-import { ThreeElements, Vector3 } from "@react-three/fiber"
-import { useRef, useState } from "react"
-import * as THREE from 'three'
+import { ThreeElements } from "@react-three/fiber";
+import { useRef } from "react";
+import * as THREE from 'three';
 import { supabase } from "../../Auth/supabaseClient";
 
 
@@ -10,17 +10,17 @@ export const Player = ({ props, color, id }: { props?: ThreeElements['mesh'], co
 
     document.addEventListener('keypress', (event) => {
         var name = event.key;
-        if (ref.current != null) {
-            if ("d" == name) {
+        if (ref.current !== null) {
+            if ("d" === name) {
                 ref.current.position.x += 10;
             }
-            if ("q" == name) {
+            if ("q" === name) {
                 ref.current.position.x -= 10;
             }
-            if ("z" == name) {
+            if ("z" === name) {
                 ref.current.position.y += 10;
             }
-            if ("s" == name) {
+            if ("s" === name) {
                 ref.current.position.y -= 10;
             }
         }

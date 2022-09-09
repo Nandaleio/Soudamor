@@ -1,4 +1,4 @@
-import { Paper, List, ListItem, ListItemButton } from "@mui/material";
+import { List, ListItem, ListItemButton, Paper } from "@mui/material";
 import { supabase } from "../Auth/supabaseClient";
 import { TodoItem } from "../models/todoEntity";
 

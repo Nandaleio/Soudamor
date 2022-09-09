@@ -7,7 +7,7 @@ export const Entity = ({entity}: {entity: SimpleEntity}) => {
 
     useEffect(() => {
         console.log("Creation new Entity: ", entity);
-    }, []);
+    }, [entity]);
 
     const ref = useRef<THREE.Mesh>(null!)
     

@@ -1,11 +1,10 @@
 import { Box } from "@mui/material";
-import { Canvas } from "@react-three/fiber"
-import { useEffect, useState } from "react"
+import { Canvas } from "@react-three/fiber";
+import { useEffect, useState } from "react";
 import { supabase } from "../Auth/supabaseClient";
 import { SimpleEntity } from "../models/GameEntities";
 import { Entity } from "./Entities/Entity";
 import { Player } from "./Entities/Player";
-import { BoxMesh } from "./Utils/Shapes";
 
 
 export const Game = () => {
@@ -16,7 +15,7 @@ export const Game = () => {
     supabase.from('entities')
         .on('INSERT', payload => {
             console.log('New Player arrived: ', payload.new)
-            if (payload.new.user_id != user_id) {
+            if (payload.new.user_id !== user_id) {
                 setEntities(entities => [...entities, payload.new]);
             }
         })
@@ -53,7 +52,7 @@ export const Game = () => {
                 .eq('user_id', user_id)
                 .then(() => { console.log("Leaving World"); })
         }
-    }, []);
+    }, [color, user_id]);
 
     return (
         <Box sx={{height: "91vh", background: "black" }}>
@@ -62,7 +61,9 @@ export const Game = () => {
                     <ambientLight />
 
                     {entities.map(e => {
-                        <Entity entity={e} />
+                        return (
+                            <Entity entity={e} />
+                        )
                     })}
 
                     <Player color={color} id={user_id!} />

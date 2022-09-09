@@ -1,5 +1,4 @@
 import { Chip, Stack } from "@mui/material";
-import { RealtimeSubscription } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { useUserHook } from "../../hooks/UserHook";
 import { supabase } from "../Auth/supabaseClient";

@@ -1,7 +1,5 @@
 import { Box, Grid, Stack } from "@mui/material"
-import { RealtimeSubscription } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
-import { convertToObject } from "typescript"
 import { supabase } from "../Auth/supabaseClient"
 import { TodoItem } from "../models/todoEntity"
 import { AddTodo } from "./AddTodo"

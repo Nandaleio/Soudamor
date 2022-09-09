@@ -1,11 +1,11 @@
-import { Avatar, ClickAwayListener, Divider, Fab, List, ListItem, ListItemAvatar, Paper, Stack } from "@mui/material"
-import { useEffect, useState } from "react";
+import SendIcon from '@mui/icons-material/Send';
+import { Fab, Paper } from "@mui/material";
+import { useState } from "react";
 import { useUserHook } from "../../hooks/UserHook";
 import { supabase } from "../Auth/supabaseClient";
 import { ChattingInput } from "./ChattingInput";
 import { ChattingMessages } from "./ChattingMessages";
 import { ConnectedUserList } from "./ConnectedUserList";
-import SendIcon from '@mui/icons-material/Send';
 
 
 export const Chat = () => {

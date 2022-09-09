@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { Stack, Avatar, IconButton, Box } from "@mui/material"
-import { supabase } from "../Auth/supabaseClient"
-import { User } from "../models/User";
-import { useUserHook } from "../../hooks/UserHook";
-import { UserAvatar } from "./UserAvatar";
-import { FriendModal } from "./FriendModal";
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Box, IconButton, Stack } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useUserHook } from "../../hooks/UserHook";
+import { supabase } from "../Auth/supabaseClient";
+import { User } from "../models/User";
+import { FriendModal } from "./FriendModal";
+import { UserAvatar } from "./UserAvatar";
 
 
 export const ConnectedUserList = ({ callB, selectedUser }: { callB: any, selectedUser: string }) => {

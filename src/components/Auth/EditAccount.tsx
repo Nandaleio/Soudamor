@@ -1,7 +1,6 @@
 
-import { Card, CardContent, Typography, CardActions, Button } from '@mui/material'
-import { useFrame } from '@react-three/fiber'
-import { useState, useEffect } from 'react'
+import { Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { useUserHook } from '../../hooks/UserHook'
 import { UserAvatar } from '../Chat/UserAvatar'
 import { User } from '../models/User'
@@ -11,6 +10,9 @@ const EditAccount = () => {
 
     const [user] = useUserHook();
     const [publicUser, setPublicUser] = useState<User>();
+
+    const [username, setUsername] = useState();
+    const [color, setColor] = useState();
 
     useEffect(() => {
         supabase.from("users")
@@ -31,10 +33,11 @@ const EditAccount = () => {
 
                 <UserAvatar user={publicUser ?? {id: ''}} selectedUser={user ? user.id : ''}/>
 
-                <Typography variant="h4" color="text.secondary" gutterBottom>
-                    {publicUser?.username}
-                </Typography>
-
+                <TextField label="Username" variant="outlined" value={publicUser?.username} onChange={(e: any) => setUsername(e.target.value)}/>
+                
+                {/* <ColorPicker name='color' defaultValue='#000' value={publicUser?.color} onChange={color => setColor(color)} */}
+ 
+/>br
 
 
                 <Typography>
@@ -47,6 +50,7 @@ const EditAccount = () => {
                 </Typography>
             </CardContent>
             <CardActions>
+                <Button>Save</Button>
             </CardActions>
         </Card>
     )
