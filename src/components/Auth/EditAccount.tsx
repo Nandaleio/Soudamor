@@ -12,7 +12,18 @@ const EditAccount = () => {
     const [publicUser, setPublicUser] = useState<User>();
 
     const [username, setUsername] = useState();
-    const [color, setColor] = useState();
+    // const [color, setColor] = useState();
+
+    const saveAccount = () => {
+
+        supabase
+            .from('users')
+            .update({ userName: username })
+            .eq("id", user?.id)
+            .then(res => {
+                console.log('User updated', res);
+            })
+    }
 
     useEffect(() => {
         supabase.from("users")
@@ -24,19 +35,19 @@ const EditAccount = () => {
                     setPublicUser(res.data[0])
                 }
             })
-    }, [])
+    }, [user?.id])
 
     return (
 
         <Card sx={{ minWidth: 275 }}>
             <CardContent>
 
-                <UserAvatar user={publicUser ?? {id: ''}} selectedUser={user ? user.id : ''}/>
+                <UserAvatar user={publicUser ?? { id: '' }} selectedUser={user ? user.id : ''} />
 
-                <TextField label="Username" variant="outlined" value={publicUser?.username} onChange={(e: any) => setUsername(e.target.value)}/>
-                
+                <TextField label="Username" variant="outlined" value={publicUser?.username} onChange={(e: any) => setUsername(e.target.value)} />
+
                 {/* <ColorPicker name='color' defaultValue='#000' value={publicUser?.color} onChange={color => setColor(color)} */}
- 
+
 
 
 
@@ -46,11 +57,11 @@ const EditAccount = () => {
                     Roles : {user?.role}
                     <br />
                     Last Sign at: {user?.last_sign_in_at}
-                    
+
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button>Save</Button>
+                <Button onClick={saveAccount}>Save</Button>
             </CardActions>
         </Card>
     )

@@ -35,7 +35,7 @@ export const ConnectedUserList = ({ callB, selectedUser }: { callB: any, selecte
             })
 
 
-    }, [])
+    }, [currentUser?.id])
 
     return (
         <>

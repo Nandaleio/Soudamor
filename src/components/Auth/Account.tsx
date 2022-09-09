@@ -26,7 +26,7 @@ const Account = () => {
                     setPublicUser(res.data[0])
                 }
             })
-    }, [])
+    }, [user?.id])
 
     return (
 

@@ -38,7 +38,6 @@ export const FriendModal = ({ open, onClose }: { open: boolean, onClose: any }) 
 
     useEffect(() => {
         if (open && searchUserName) {
-            let friends = [];
 
             supabase.from('friends')
             .select(`friend_id`)
@@ -59,7 +58,7 @@ export const FriendModal = ({ open, onClose }: { open: boolean, onClose: any }) 
         if (!searchUserName) {
             setListAllUser([]);
         }
-    }, [open, searchUserName]);
+    }, [open, searchUserName, currentUser?.id]);
 
 
     return (
